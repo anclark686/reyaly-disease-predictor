@@ -32,7 +32,6 @@ function SymptomContainer({ symptoms, setResults, setLoading }: SymptomContainer
   };
 
   const predict = async () => {
-    console.log("Predicting with symptoms:", selectedSymptoms);
     try {
       setLoading(true);
       const result = await predictDisease(selectedSymptoms);
