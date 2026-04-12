@@ -38,7 +38,11 @@ function a11yProps(index: number) {
   };
 }
 
-function ResultsContainer({ results, symptoms, loading }: ResultsContainerProps) {
+function ResultsContainer({
+  results,
+  symptoms,
+  loading,
+}: ResultsContainerProps) {
   const [value, setValue] = useState(0);
   const [confidenceMessage, setConfidenceMessage] = useState("");
   const [confidenceColor, setConfidenceColor] = useState("#020f1f");
@@ -52,22 +56,22 @@ function ResultsContainer({ results, symptoms, loading }: ResultsContainerProps)
     if (results) {
       if (results.confidence_percentage < 5) {
         setConfidenceColor("#db3f3f");
-        return "This prediction has low confidence. Multiple conditions may match the selected symptoms."
+        return "This prediction has low confidence. Multiple conditions may match the selected symptoms.";
       } else if (results.confidence_percentage < 10) {
         setConfidenceColor("#a96c02");
-        return "This prediction has moderate confidence. Consider reviewing the top alternative predictions."
+        return "This prediction has moderate confidence. Consider reviewing the top alternative predictions.";
       } else {
         setConfidenceColor("#07845e");
-        return "This prediction has relatively higher confidence compared to other possible conditions."
+        return "This prediction has relatively higher confidence compared to other possible conditions.";
       }
     }
     return "";
   };
-  
+
   useEffect(() => {
     setConfidenceMessage(findConfidenceMessage());
   }, [results]);
-  
+
   return (
     <div>
       <Typography variant="h2">Prediction Results</Typography>
@@ -78,104 +82,109 @@ function ResultsContainer({ results, symptoms, loading }: ResultsContainerProps)
             <br />
             <CircularProgress />
           </div>
-        ) : results ? ( 
-        <>
-        <Typography variant="h3">Top Prediction</Typography>
-        <Typography variant="body1" id="top-prediction">
-          {capitalize(results.predicted_disease)} -{" "}
-          {results.confidence_percentage}%
-        </Typography>
+        ) : results ? (
+          <>
+            <Typography variant="h3">Top Prediction</Typography>
+            <Typography variant="body1" id="top-prediction">
+              {capitalize(results.predicted_disease)} -{" "}
+              {results.confidence_percentage}%
+            </Typography>
 
-        <Typography variant="body1" id="confidence-message" style={{ color: confidenceColor }}>
-          {confidenceMessage}
-        </Typography>
-
-        <Typography variant="h4">Based on Selected Symptoms</Typography>
-        <Typography variant="body1">
-          {results.selected_symptoms
-            .map((symptom) => symptoms[symptom])
-            .join(", ")}
-        </Typography>
-
-        <Typography variant="h4">Top Three Predictions</Typography>
-
-        <Box sx={{ width: "100%" }}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="Top Predictions"
-              centered
-              sx={{
-                mb: 2,
-                backgroundColor: "#1a2332",
-                borderRadius: "5px",
-                "& .MuiTabs-indicator": {
-                  backgroundColor: theme.palette.primary.main,
-                },
-              }}
-              className="custom-tabs"
+            <Typography
+              variant="body1"
+              id="confidence-message"
+              style={{ color: confidenceColor }}
             >
-              {results.top_predictions.map((prediction, index) => (
-                <Tab
-                  key={`${prediction.disease}-tab-label-${index}`}
-                  label={prediction.disease}
-                  {...a11yProps(index)}
+              {confidenceMessage}
+            </Typography>
+
+            <Typography variant="h4">Based on Selected Symptoms</Typography>
+            <Typography variant="body1">
+              {results.selected_symptoms
+                .map((symptom) => symptoms[symptom])
+                .join(", ")}
+            </Typography>
+
+            <Typography variant="h4">Top Three Predictions</Typography>
+
+            <Box sx={{ width: "100%" }}>
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  aria-label="Top Predictions"
+                  centered
                   sx={{
-                    color: "#ffffff",
-                    "&.Mui-selected": {
-                      color: theme.palette.primary.main,
-                      fontWeight: "bold",
+                    mb: 2,
+                    backgroundColor: "#1a2332",
+                    borderRadius: "5px",
+                    "& .MuiTabs-indicator": {
+                      backgroundColor: theme.palette.primary.main,
                     },
-                    "&:hover": {
-                      color: theme.palette.primary.main,
-                    },
-                    fontSize: "1rem",
                   }}
-                />
+                  className="custom-tabs"
+                >
+                  {results.top_predictions.map((prediction, index) => (
+                    <Tab
+                      key={`${prediction.disease}-tab-label-${index}`}
+                      label={prediction.disease}
+                      {...a11yProps(index)}
+                      sx={{
+                        color: "#ffffff",
+                        "&.Mui-selected": {
+                          color: theme.palette.primary.main,
+                          fontWeight: "bold",
+                        },
+                        "&:hover": {
+                          color: theme.palette.primary.main,
+                        },
+                        fontSize: "1rem",
+                      }}
+                    />
+                  ))}
+                </Tabs>
+              </Box>
+              {results.top_predictions.map((prediction, index) => (
+                <CustomTabPanel
+                  key={`${prediction.disease}-tab-panel-${index}`}
+                  value={value}
+                  index={index}
+                >
+                  <Typography variant="body1">
+                    <strong>Disease Name:</strong>{" "}
+                    {capitalize(prediction.disease)}
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Confidence:</strong> {prediction.percentage}%
+                  </Typography>
+                  {prediction.summary.summary.includes("https") ? (
+                    <Typography variant="body1">
+                      <strong>Click for More Info:</strong>{" "}
+                      <a
+                        href={prediction.summary.summary}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {prediction.summary.summary}
+                      </a>
+                    </Typography>
+                  ) : (
+                    <Typography variant="body1">
+                      <strong>Summary:</strong> {prediction.summary.summary}{" "}
+                      <strong>Source:</strong> {prediction.summary.source}
+                    </Typography>
+                  )}
+                  <br />
+                  <Typography variant="body1">
+                    <strong>
+                      <em>Educational information only - not medical advice</em>
+                    </strong>
+                  </Typography>
+                </CustomTabPanel>
               ))}
-            </Tabs>
-          </Box>
-          {results.top_predictions.map((prediction, index) => (
-            <CustomTabPanel
-              key={`${prediction.disease}-tab-panel-${index}`}
-              value={value}
-              index={index}
-            >
-              <Typography variant="body1">
-                <strong>Disease Name:</strong> {capitalize(prediction.disease)}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Confidence:</strong> {prediction.percentage}%
-              </Typography>
-              {prediction.summary.summary.includes("https") ? (
-                <Typography variant="body1">
-                  <strong>Click for More Info:</strong>{" "}
-                  <a
-                    href={prediction.summary.summary}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {prediction.summary.summary}
-                  </a>
-                </Typography>
-              ) : (
-                <Typography variant="body1">
-                  <strong>Summary:</strong> {prediction.summary.summary}{" "}
-                  <strong>Source:</strong> {prediction.summary.source}
-                </Typography>
-              )}
-              <br />
-              <Typography variant="body1">
-                <strong>
-                  <em>Educational information only - not medical advice</em>
-                </strong>
-              </Typography>
-            </CustomTabPanel>
-          ))}
-        </Box>
-        </>
-      ) : null}
+            </Box>
+          </>
+        ) : null}
       </div>
     </div>
   );

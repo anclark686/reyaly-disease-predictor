@@ -7,7 +7,11 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { predictDisease } from "../../utils/api";
 import type { SymptomContainerProps } from "../../utils/types";
 
-function SymptomContainer({ symptoms, setResults, setLoading }: SymptomContainerProps) {
+function SymptomContainer({
+  symptoms,
+  setResults,
+  setLoading,
+}: SymptomContainerProps) {
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
 

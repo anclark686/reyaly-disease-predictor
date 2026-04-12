@@ -9,14 +9,14 @@ function PageCard({ icon, title, color, link }: PageCardProps) {
   const gradient = `linear-gradient(155deg, ${color} 0%, #00000080 100%)`;
   return (
     <a href={link} className="page-card-link">
-    <Card sx={{ maxWidth: 400, background: gradient }} className="page-card">
-      <CardMedia component="img" height="200" image={icon} alt={title} />
-      <CardContent>
-        <Typography variant="h4" component="div">
-          {title}
-        </Typography>
-      </CardContent>
-    </Card>
+      <Card sx={{ maxWidth: 400, background: gradient }} className="page-card">
+        <CardMedia component="img" height="200" image={icon} alt={title} />
+        <CardContent>
+          <Typography variant="h4" component="div">
+            {title}
+          </Typography>
+        </CardContent>
+      </Card>
     </a>
   );
 }

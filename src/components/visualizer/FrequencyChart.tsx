@@ -56,9 +56,9 @@ function FrequencyChart({ data }: FrequencyChartProps) {
       <div className="chart-summary">
         <Typography variant="body1" className="visualization-caption">
           Sharp abdominal pain, vomiting, and headache appear most frequently
-          across cases, suggesting that these symptoms are highly represented
-          in the dataset. This may influence the model to favor diseases
-          associated with these symptoms.
+          across cases, suggesting that these symptoms are highly represented in
+          the dataset. This may influence the model to favor diseases associated
+          with these symptoms.
         </Typography>
       </div>
     </section>

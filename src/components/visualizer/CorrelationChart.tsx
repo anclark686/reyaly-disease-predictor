@@ -18,10 +18,6 @@ const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
   },
 }));
 
-// function formatHeatmapLabel(label: string) {
-//   return label.length > 18 ? `${label.slice(0, 18)}...` : label;
-// }
-
 function getHeatmapColor(correlation: number) {
   const intensity = Math.abs(correlation);
 
