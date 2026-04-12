@@ -25,6 +25,9 @@ bun start
 
 ## Environment variables
 
+Local development uses `http://localhost:8000` by default through
+`frontend/.env.development`.
+
 Create a `.env.local` file if you want to override the backend API URL during
 development:
 
@@ -32,10 +35,7 @@ development:
 BUN_PUBLIC_API_BASE_URL=http://localhost:8000
 ```
 
-If `BUN_PUBLIC_API_BASE_URL` is not set, the app uses:
-
-- `http://localhost:8000` during local development
-- `https://reyaly-disease-api-6134cc2769e3.herokuapp.com` outside localhost
+For production, set `BUN_PUBLIC_API_BASE_URL` to your deployed backend URL.
 
 ## Heroku deployment notes
 
