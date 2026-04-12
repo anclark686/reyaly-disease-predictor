@@ -20,19 +20,45 @@ const API_BASE_URL =
       ? DEFAULT_LOCAL_API_BASE_URL
       : DEFAULT_PRODUCTION_API_BASE_URL;
 
+const API_TIMEOUT_MS = 30000;
+const RETRY_DELAY_MS = 5000;
+const WAKE_UP_MESSAGE =
+  "The server may be waking up. Please wait a few seconds and try again.";
+
 export const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000, // 10 second timeout
+  timeout: API_TIMEOUT_MS,
 });
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const shouldRetry = (error: unknown) =>
+  axios.isAxiosError(error) &&
+  (error.code === "ECONNABORTED" || error.response?.status === 503);
+
+const withWakeRetry = async <T>(request: () => Promise<T>): Promise<T> => {
+  try {
+    return await request();
+  } catch (error) {
+    if (!shouldRetry(error)) {
+      throw error;
+    }
+
+    await sleep(RETRY_DELAY_MS);
+    return request();
+  }
+};
 
 export const getSymptoms: () => Promise<SymptomsResponse> = async () => {
   try {
-    const response = await api.get("/api/symptoms");
+    const response = await withWakeRetry(() => api.get("/api/symptoms"));
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.code === 'ECONNABORTED') {
-        throw new Error('Request timed out. Please check your connection and try again.');
+        throw new Error(`Request timed out. ${WAKE_UP_MESSAGE}`);
+      } else if (error.response?.status === 503) {
+        throw new Error(`The backend is temporarily unavailable. ${WAKE_UP_MESSAGE}`);
       } else if (error.response?.status === 500) {
         throw new Error('Server error. Please try again later.');
       } else if (error.response?.status === 404) {
@@ -57,7 +83,9 @@ export const predictDisease: (
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.code === 'ECONNABORTED') {
-        throw new Error('Prediction request timed out. Please try again.');
+        throw new Error(`Prediction request timed out. ${WAKE_UP_MESSAGE}`);
+      } else if (error.response?.status === 503) {
+        throw new Error(`The backend is temporarily unavailable. ${WAKE_UP_MESSAGE}`);
       } else if (error.response?.status === 500) {
         throw new Error('Server error during prediction. Please try again later.');
       } else if (error.response?.status === 400) {
@@ -77,12 +105,14 @@ export const predictDisease: (
 
 export const getVisualizationData: () => Promise<VisualizationData> = async () => {
   try {
-    const response = await api.get("/api/visualizations");
+    const response = await withWakeRetry(() => api.get("/api/visualizations"));
     return response.data.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.code === "ECONNABORTED") {
-        throw new Error("Visualization request timed out. Please try again.");
+        throw new Error(`Visualization request timed out. ${WAKE_UP_MESSAGE}`);
+      } else if (error.response?.status === 503) {
+        throw new Error(`The backend is temporarily unavailable. ${WAKE_UP_MESSAGE}`);
       } else if (error.response?.status === 500) {
         throw new Error("Server error while loading visualizations.");
       } else if (error.response?.status === 404) {
@@ -100,12 +130,14 @@ export const getVisualizationData: () => Promise<VisualizationData> = async () =
 
 export const getModelConfidenceData: () => Promise<ModelConfidenceData> = async () => {
   try {
-    const response = await api.get("/api/model-confidence");
+    const response = await withWakeRetry(() => api.get("/api/model-confidence"));
     return response.data.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.code === "ECONNABORTED") {
-        throw new Error("Confidence data request timed out. Please try again.");
+        throw new Error(`Confidence data request timed out. ${WAKE_UP_MESSAGE}`);
+      } else if (error.response?.status === 503) {
+        throw new Error(`The backend is temporarily unavailable. ${WAKE_UP_MESSAGE}`);
       } else if (error.response?.status === 500) {
         throw new Error("Server error while loading model confidence data.");
       } else if (error.response?.status === 404) {
