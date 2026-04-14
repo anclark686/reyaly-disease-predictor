@@ -9,7 +9,7 @@ import type {
 
 const DEFAULT_LOCAL_API_BASE_URL = "http://localhost:8000";
 const DEFAULT_PRODUCTION_API_BASE_URL =
-  "https://reyaly-disease-api-6134cc2769e3.herokuapp.com";
+  "https://reyaly-disease-api-106e4e5c0c00.herokuapp.com";
 
 const configuredApiBaseUrl = process.env.BUN_PUBLIC_API_BASE_URL?.trim();
 
