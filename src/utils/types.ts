@@ -66,6 +66,18 @@ export type SymptomFrequencyItem = {
   count: number;
 };
 
+export type DiseasePrevalenceItem = {
+  disease: string;
+  count: number;
+};
+
+export type DiseaseSymptomMatrixItem = {
+  disease: string;
+  symptom: string;
+  count: number;
+  percentage: number;
+};
+
 export type SymptomCorrelationHeatmapCell = {
   xSymptom: string;
   ySymptom: string;
@@ -83,6 +95,12 @@ export type VisualizationData = {
   heatmap_symptoms: string[];
   symptom_correlation_heatmap: SymptomCorrelationHeatmapCell[];
   symptom_count_distribution: SymptomCountDistributionItem[];
+  disease_prevalence: DiseasePrevalenceItem[];
+  disease_symptom_matrix_legends: {
+    diseases: string[];
+    symptoms: string[];
+  };
+  disease_symptom_matrix: DiseaseSymptomMatrixItem[];
 };
 
 export type ConfidenceDistributionItem = {
@@ -139,4 +157,16 @@ export type CountChartProps = {
 export type SummarySquareProps = {
   value: number | string;
   label: string;
+};
+
+export type PrevalenceChartProps = {
+  data: DiseasePrevalenceItem[];
+};
+
+export type ComparisonChartProps = {
+  data: DiseaseSymptomMatrixItem[];
+  legends: {
+    diseases: string[];
+    symptoms: string[];
+  };
 };

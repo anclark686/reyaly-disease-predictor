@@ -7,6 +7,8 @@ import VisualizationSummary from "../components/visualizer/VisualizationSummary"
 import FrequencyChart from "../components/visualizer/FrequencyChart";
 import CorrelationChart from "../components/visualizer/CorrelationChart";
 import CountChart from "../components/visualizer/CountChart";
+import PrevalenceChart from "../components/visualizer/PrevalenceChart";
+import CooccurenceChart from "../components/visualizer/CooccurenceChart";
 import { getVisualizationData } from "../utils/api";
 import type { VisualizationData } from "../utils/types";
 
@@ -79,6 +81,13 @@ function VisualizationsPage() {
               />
 
               <CountChart data={visualizationData.symptom_count_distribution} />
+
+              <CooccurenceChart
+                data={visualizationData.disease_symptom_matrix}
+                legends={visualizationData.disease_symptom_matrix_legends}
+              />
+
+              <PrevalenceChart data={visualizationData.disease_prevalence} />
             </div>
           </>
         )}

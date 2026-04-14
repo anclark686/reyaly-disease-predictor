@@ -123,6 +123,7 @@ export const getVisualizationData: () => Promise<VisualizationData> =
       const response = await withWakeRetry(() =>
         api.get("/api/visualizations"),
       );
+      console.log(response.data.data);
       return response.data.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

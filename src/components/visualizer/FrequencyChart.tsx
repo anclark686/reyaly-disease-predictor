@@ -20,8 +20,8 @@ function FrequencyChart({ data }: FrequencyChartProps) {
       <Typography variant="h4">Top Symptom Frequency</Typography>
 
       <Typography variant="body1" className="visualization-caption">
-        Figure 1: The most common symptoms in the dataset, based on how often
-        each symptom appears across all cases.
+        <strong>Figure 1:</strong> The most common symptoms in the dataset,
+        based on how often each symptom appears across all cases.
       </Typography>
 
       <div className="chart-container chart-container-large">
@@ -55,7 +55,7 @@ function FrequencyChart({ data }: FrequencyChartProps) {
 
       <div className="chart-summary">
         <Typography variant="body1" className="visualization-caption">
-          Sharp abdominal pain, vomiting, and headache appear most frequently
+          Sharp abdominal pain, vomiting, and cough appear most frequently
           across cases, suggesting that these symptoms are highly represented in
           the dataset. This may influence the model to favor diseases associated
           with these symptoms.

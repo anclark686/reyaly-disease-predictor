@@ -16,8 +16,9 @@ function CountChart({ data }: CountChartProps) {
     <section className="visualization-card visualization-card-wide">
       <Typography variant="h4">Symptom Count per Case</Typography>
       <Typography variant="body1" className="visualization-caption">
-        Figure 3: The number of symptoms present in each case. This gives
-        context for how simple or complex a typical patient record is.
+        <strong>Figure 3:</strong> The number of symptoms present in each case.
+        This gives context for how simple or complex a typical patient record
+        is.
       </Typography>
       <div className="chart-container">
         <ResponsiveContainer width="100%" height="100%">
