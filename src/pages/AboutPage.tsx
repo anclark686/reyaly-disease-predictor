@@ -75,7 +75,7 @@ function AboutPage() {
                 Why the Live Confidence Looks Low
               </Typography>
               <Typography variant="body1">
-                User-entered predictions in the interactive app may show lower
+                User-entered inputs in the interactive app may show lower
                 confidence when only one or two symptoms are selected, since
                 fewer symptoms provide less information for distinguishing among
                 the 773 possible diseases. That is why the app returns the top
