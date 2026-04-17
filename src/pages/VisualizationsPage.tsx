@@ -73,14 +73,14 @@ function VisualizationsPage() {
             <div className="visualization-grid">
               <FrequencyChart data={visualizationData.top_symptoms} />
 
+              <CountChart data={visualizationData.symptom_count_distribution} />
+
               <CorrelationChart
                 heatmap_symptoms={visualizationData.heatmap_symptoms}
                 symptom_correlation_heatmap={
                   visualizationData.symptom_correlation_heatmap
                 }
               />
-
-              <CountChart data={visualizationData.symptom_count_distribution} />
 
               <CooccurenceChart
                 data={visualizationData.disease_symptom_matrix}

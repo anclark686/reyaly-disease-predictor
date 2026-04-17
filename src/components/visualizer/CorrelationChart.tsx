@@ -23,7 +23,7 @@ function CorrelationChart({
     <section className="visualization-card visualization-card-wide">
       <Typography variant="h4">Symptom Correlation Heatmap</Typography>
       <Typography variant="body1" className="visualization-caption">
-        <strong>Figure 2:</strong> Correlation between the most frequent
+        <strong>Figure 3:</strong> Correlation between the most frequent
         symptoms in the dataset. Darker cells indicate symptoms that tend to
         appear together more often.
       </Typography>
